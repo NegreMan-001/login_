@@ -1,125 +1,105 @@
 import 'package:flutter/material.dart';
 
-
-int main(){
- 	runApp(MyMain());
+void main() {
+  runApp(MyMain());
 }
 
-
-// the main class
-class MyMain extends StatelessWidget{
-
-	 	
- 	Widget build(BuildContext cont){
- 	    return MaterialApp(
- 	        titile: "login",
- 	        home: TheLoginScreen(),
- 	    );
- 	}
- 
-
-}
-
-// to manage the state
-class TheLogin extends StatefulWidget{
-
-	const TheLogin({Key? key}) : super(key: key);
- 
- 	TheLoginScreen createState() => TheLoginScreen();
-}
-
-
-
-class TheLoginScreen extends State<TheLogin>{
-String email;
-String password;
-
-
-final _keyToControlMyForm = GlobalKey<FormState>();
-
-bool _isChecked = false;
-
-
-void onSubmit(){
-   print();
-}
-
-
-
-
-// first state---------------------------- 
-void initState(){
-super.initState();
-}
-
-
-//------------------------------
-@override
+class MyMain extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Login',
-              hintText: 'Your login',
-            ),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Enter your login';
-              }
-              return null;
-            },
-          ),
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Mot de passe',
-              hintText: 'Your password',
-            ),
-            obscureText: true,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Your password please';
-              }
-              return null;
-            },
-          ),
-          Row(
+    return MaterialApp(
+      title: "Login",
+      home: TheLoginScreen(),
+    );
+  }
+}
+
+class TheLoginScreen extends StatefulWidget {
+  const TheLoginScreen({Key? key}) : super(key: key);
+
+  @override
+  _TheLoginScreenState createState() => _TheLoginScreenState();
+}
+
+class _TheLoginScreenState extends State<TheLoginScreen> {
+  String? email;
+  String? password;
+
+  final _formKey = GlobalKey<FormState>();
+
+  bool _isChecked = false;
+
+  void onSubmit() {
+    print('Form submitted');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Login')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
             children: <Widget>[
-              Checkbox(
-                value: _isChecked,
-                onChanged: (value) {
-                  setState(() {
-                    _isChecked = value;
-                  });
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Login',
+                  hintText: 'Your login',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter your login';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  email = value;
                 },
               ),
-              Text('Remembering... '),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  hintText: 'Your password',
+                ),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Your password please';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  password = value;
+                },
+              ),
+              Row(
+                children: <Widget>[
+                  Checkbox(
+                    value: _isChecked,
+                    onChanged: (value) {
+                      setState(() {
+                        _isChecked = value ?? false;
+                      });
+                    },
+                  ),
+                  Text('Remember me'),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    onSubmit();
+                  }
+                },
+                child: Text('Login'),
+              ),
             ],
           ),
-          ElevatedButtom(
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-              
-              }
-            },
-            child: Text('Se connecter'),
-          ),
-        ],
+        ),
       ),
     );
   }
-
-
-
 }
-
-
-
-
-
-
-
-
-
